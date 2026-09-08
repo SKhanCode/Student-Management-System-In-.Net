@@ -1,0 +1,144 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row align-items-center mt-5 mb-5 pt-3">
+    <div class="col-lg-6 pe-lg-5">
+        <h1 class="display-4 fw-bold text-dark">
+            Student Management <span class="text-primary">System</span>
+        </h1>
+        <h3 class="text-secondary fw-normal mb-4">
+            Designed for <span id="typewriter" class="text-dark fw-bold"></span><span class="blinking-cursor fw-bold text-dark">|</span>
+        </h3>
+        <p class="fs-5 text-muted mb-4 lh-base">
+            A highly optimized, full-stack CRUD application powered by ASP.NET MVC and Entity Framework. Streamline your database operations instantly.
+        </p>
+        <div class="d-flex gap-3">
+            @Html.ActionLink("View Directory", "Index", "Student", null, new { @class = "btn btn-primary btn-lg px-4 fw-bold shadow-sm" })
+            @Html.ActionLink("Add New Student", "AddStudent", "Student", null, new { @class = "btn btn-outline-secondary btn-lg px-4 bg-white shadow-sm" })
+        </div>
+    </div>
+
+    <div class="col-lg-6 mt-5 mt-lg-0">
+        <!-- Faux Code Editor Graphic -->
+        <div class="card border-0 shadow-lg" style="background-color: #1e1e1e; border-radius: 15px; overflow: hidden;">
+            <div class="d-flex px-3 py-2" style="background-color: #2d2d2d;">
+                <div class="rounded-circle me-2" style="width: 12px; height: 12px; background-color: #ff5f56;"></div>
+                <div class="rounded-circle me-2" style="width: 12px; height: 12px; background-color: #ffbd2e;"></div>
+                <div class="rounded-circle" style="width: 12px; height: 12px; background-color: #27c93f;"></div>
+            </div>
+            <div class="p-4 text-start" style="font-family: 'Courier New', Courier, monospace; color: #d4d4d4; font-size: 1.1rem; line-height: 1.8;">
+                <span style="color: #569cd6;">public class</span> <span style="color: #4ec9b0;">Student</span><br />
+                {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #569cd6;">public int</span> Id { <span style="color: #569cd6;">get</span>; <span style="color: #569cd6;">set</span>; }<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #569cd6;">public string</span> Name { <span style="color: #569cd6;">get</span>; <span style="color: #569cd6;">set</span>; }<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #569cd6;">public bool</span> IsActive { <span style="color: #569cd6;">get</span>; <span style="color: #569cd6;">set</span>; }<br />
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr style="opacity: 0.1;" class="my-5" />
+
+<!-- Features Section -->
+<!-- Features Section -->
+<div class="row g-4 mt-2 mb-5 text-start">
+    <div class="col-md-4">
+        <div class="d-flex align-items-start">
+            <div class="bg-white rounded shadow-sm me-3 border d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; flex-shrink: 0;">
+                <i class="fas fa-search fs-4 text-dark"></i>
+            </div>
+            <div>
+                <h5 class="fw-bold mb-1">Instant Search</h5>
+                <p class="text-muted small mb-0">Filter through active students in milliseconds using optimized queries.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="d-flex align-items-start">
+            <div class="bg-white rounded shadow-sm me-3 border d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; flex-shrink: 0;">
+                <i class="fas fa-edit fs-4 text-warning"></i>
+            </div>
+            <div>
+                <h5 class="fw-bold mb-1">Data Validation</h5>
+                <p class="text-muted small mb-0">Built-in annotations ensure all student records are highly accurate.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="d-flex align-items-start">
+            <div class="bg-white rounded shadow-sm me-3 border d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; flex-shrink: 0;">
+                <i class="fas fa-folder-open fs-4 text-warning"></i>
+            </div>
+            <div>
+                <h5 class="fw-bold mb-1">Secure Archive</h5>
+                <p class="text-muted small mb-0">Safely manage records and maintain database integrity at all times.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Auto-Typing CSS -->
+<style>
+    .blinking-cursor {
+        animation: blink 1s step-end infinite;
+    }
+
+    @@keyframes blink {
+        0%, 100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0;
+        }
+    }
+</style>
+
+<!-- Auto-Typing JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const phrases = [
+            "Seamless Management.",
+            "Rapid Search Queries.",
+            "Secure Data Architecture."
+        ];
+
+        let currentPhraseIndex = 0;
+        let currentCharIndex = 0;
+        let isDeleting = false;
+        const element = document.getElementById('typewriter');
+
+        function type() {
+            const currentPhrase = phrases[currentPhraseIndex];
+            let typingSpeed = isDeleting ? 50 : 100; // Type fast, delete faster
+
+            if (isDeleting) {
+                element.textContent = currentPhrase.substring(0, currentCharIndex - 1);
+                currentCharIndex--;
+            } else {
+                element.textContent = currentPhrase.substring(0, currentCharIndex + 1);
+                currentCharIndex++;
+            }
+
+            // Word finished typing
+            if (!isDeleting && currentCharIndex === currentPhrase.length) {
+                isDeleting = true;
+                typingSpeed = 2000; // Pause for 2 seconds before deleting
+            }
+            // Word finished deleting
+            else if (isDeleting && currentCharIndex === 0) {
+                isDeleting = false;
+                currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+                typingSpeed = 500; // Pause half a second before typing new word
+            }
+
+            setTimeout(type, typingSpeed);
+        }
+
+        // Start the effect after a brief delay
+        setTimeout(type, 800);
+    });
+</script>

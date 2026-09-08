@@ -1,0 +1,146 @@
+﻿@model StudentManagement.Models.tblStudent
+@{
+    ViewBag.Title = Model != null && Model.StudentId > 0 ? "Edit Student" : "Add New Student";
+}
+
+<div class="container mt-4 mb-4">
+    <!-- Form Card: Thinner width and slightly less padding -->
+    <div class="card shadow-sm mx-auto" style="max-width: 700px; border-radius: 12px; border: 1px solid #eaeaea;">
+        <div class="card-body p-4">
+
+            <div class="mb-3">
+                <h4 class="fw-bold d-flex align-items-center text-dark mb-1">
+                    <i class="fas fa-user-edit text-primary me-2 fs-5"></i> @ViewBag.Title
+                </h4>
+                <p class="text-muted small mb-0" style="margin-left: 32px;">Please fill in the student details below.</p>
+            </div>
+
+            @using (Html.BeginForm("AddStudent", "Student", FormMethod.Post))
+            {
+                @Html.HiddenFor(m => m.StudentId)
+
+                <!-- Personal Details (Side-by-Side to prevent scrolling) -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-dark small mb-1">Student Name</label>
+                        @Html.TextBoxFor(m => m.StudentName, new { @class = "form-control bg-light", required = "required", placeholder = "Enter full name" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-dark small mb-1">Email Address</label>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control bg-light", type = "email", required = "required", placeholder = "name@example.com" })
+                    </div>
+                </div>
+
+                <hr class="text-muted opacity-25 my-3">
+
+                <!-- Academic Details -->
+                <h6 class="fw-bold text-secondary mb-2 small">Academic Details</h6>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-dark small mb-1">Department</label>
+                        @Html.DropDownListFor(m => m.DepartmentId,
+                            new SelectList(ViewBag.DepartmentList, "DepartmentId", "DepartmentName"),
+                            "-- Select Department --",
+                            new { @class = "form-select bg-light", id = "ddlDepartment", onchange = "LoadCourses()" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-dark small mb-1">Course</label>
+                        <select id="ddlCourse" name="CourseId" class="form-select bg-light">
+                            <option value="0">-- Select Course --</option>
+                        </select>
+                        <input type="hidden" id="hiddenCourseId" value="@(Model != null ? Model.CourseId : 0)" />
+                    </div>
+                </div>
+
+                <hr class="text-muted opacity-25 my-3">
+
+                <!-- Location Details -->
+                <h6 class="fw-bold text-secondary mb-2 small">Location Details</h6>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold text-dark small mb-1">Country</label>
+                        @Html.DropDownListFor(m => m.CountryId,
+                            new SelectList(ViewBag.CountryList, "CountryId", "CountryName"),
+                            "-- Select Country --",
+                            new { @class = "form-select bg-light", id = "ddlCountry", onchange = "LoadStates()" })
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold text-dark small mb-1">State</label>
+                        <select id="ddlState" name="StateId" class="form-select bg-light" onchange="LoadCities()">
+                            <option value="0">-- Select State --</option>
+                        </select>
+                        <input type="hidden" id="hiddenStateId" value="@(Model != null ? Model.StateId : 0)" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold text-dark small mb-1">City</label>
+                        <select id="ddlCity" name="CityId" class="form-select bg-light">
+                            <option value="0">-- Select City --</option>
+                        </select>
+                        <input type="hidden" id="hiddenCityId" value="@(Model != null ? Model.CityId : 0)" />
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-end gap-2 mt-1">
+                    @Html.ActionLink("Cancel", "Index", "Student", null, new { @class = "btn btn-light border px-4 fw-semibold text-dark shadow-sm" })
+                    <button type="submit" class="btn btn-primary px-4 fw-semibold shadow-sm">
+                        <i class="fas fa-save me-1"></i> Save
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var savedState = $("#hiddenStateId").val();
+        if (savedState > 0) LoadStates(savedState);
+        var savedCourse = $("#hiddenCourseId").val();
+        if (savedCourse > 0) LoadCourses(savedCourse);
+    });
+
+    function LoadStates(selectedStateId = 0) {
+        $("#ddlState").empty().append('<option value="0">-- Select State --</option>');
+        $("#ddlCity").empty().append('<option value="0">-- Select City --</option>');
+        var countryId = $("#ddlCountry").val();
+        if (countryId > 0) {
+            $.ajax({
+                url: '/Student/GetStates', type: 'POST', async: false, data: { countryId: countryId },
+                success: function (data) {
+                    $.each(data, function (index, row) { $("#ddlState").append("<option value='" + row.StateId + "'>" + row.StateName + "</option>"); });
+                    if (selectedStateId > 0) { $("#ddlState").val(selectedStateId); LoadCities($("#hiddenCityId").val()); }
+                }
+            });
+        }
+    }
+
+    function LoadCities(selectedCityId = 0) {
+        $("#ddlCity").empty().append('<option value="0">-- Select City --</option>');
+        var stateId = $("#ddlState").val();
+        if (stateId > 0) {
+            $.ajax({
+                url: '/Student/GetCities', type: 'POST', async: false, data: { stateId: stateId },
+                success: function (data) {
+                    $.each(data, function (index, row) { $("#ddlCity").append("<option value='" + row.CityId + "'>" + row.CityName + "</option>"); });
+                    if (selectedCityId > 0) $("#ddlCity").val(selectedCityId);
+                }
+            });
+        }
+    }
+
+    function LoadCourses(selectedCourseId = 0) {
+        $("#ddlCourse").empty().append('<option value="0">-- Select Course --</option>');
+        var departmentId = $("#ddlDepartment").val();
+        if (departmentId > 0) {
+            $.ajax({
+                url: '/Student/GetCourses', type: 'POST', async: false, data: { departmentId: departmentId },
+                success: function (data) {
+                    $.each(data, function (index, row) { $("#ddlCourse").append("<option value='" + row.CourseId + "'>" + row.CourseName + "</option>"); });
+                    if (selectedCourseId > 0) $("#ddlCourse").val(selectedCourseId);
+                }
+            });
+        }
+    }
+</script>
