@@ -1,7 +1,10 @@
 # Student-Management-System-In-.Net
 # Student Management System
 
-<img width="1366" height="768" alt="Screenshot (687)" src="https://github.com/user-attachments/assets/495f6b79-fd85-4ecf-b560-60a6f44d8012" />
+<img width="1366" height="468" alt="Screenshot (687)" src="https://github.com/user-attachments/assets/495f6b79-fd85-4ecf-b560-60a6f44d8012" />
+<img width="1366" height="468" alt="Screenshot (738)" src="https://github.com/user-attachments/assets/26e5563b-7cbf-44c1-895a-f0b3927062c3" />
+<img width="1366" height="468" alt="Screenshot (739)" src="https://github.com/user-attachments/assets/d5585e6e-32a6-4ec5-bf1f-b2a9d2c2321f" />
+
 
 
 
