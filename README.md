@@ -1,6 +1,12 @@
 # Student-Management-System-In-.Net
 # Student Management System
 
+<img width="1366" height="768" alt="Screenshot (687)" src="https://github.com/user-attachments/assets/495f6b79-fd85-4ecf-b560-60a6f44d8012" />
+
+
+
+
+
 A full-stack web application designed to efficiently organize and manage records. This project was built from scratch to demonstrate secure backend database management and a fast, interactive frontend user experience.
 
 ## 🚀 Key Features
